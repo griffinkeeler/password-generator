@@ -13,6 +13,7 @@ def check_duplicates(word_list):
             repeated_words.append(word_list[i])
     return repeated_words
 
+# sg.main_global_pysimplegui_settings()
 # A list of verbs.
 verbs = [
     'running', 'walking', 'jogging', 'flying',
@@ -30,7 +31,7 @@ nouns = [
     ]
 
 # Function that generates and returns a random password.
-def random_password():
+def password_generator():
     # Generates a random verb from the verbs list.
     random_verb = random.randint(0, (len(verbs) - 1))
 
@@ -41,27 +42,35 @@ def random_password():
     random_number = random.randint(10, 99)
 
     # A concatenation of verbs and nouns creates a random word.
-    random_word = verbs[random_verb] + '_' + nouns[random_noun] + str(random_number)
+    random_password = verbs[random_verb] + '_' + nouns[random_noun] + str(random_number)
 
-    return random_word
+    return random_password
 
 # The layout for the GUI.
-layout = [[sg.Output(size=(30, 10))],
-         [sg.Button('Generate')],
-         [sg.Button('Exit')]]
-window = sg.Window('Title', layout)
+layout = [  [sg.Output(size=(100, 50))],
+            [sg.Push(), sg.Button('Generate'), sg.Push()],
+            [sg.Text('Loading:'),
+             sg.ProgressBar(99, key='-PROGRESS_BAR-', size=(10, 25))],
+            [sg.Push(), sg.Button('Quit'), sg.Push()]
+            ]
+count = 0
+window = sg.Window('Random Password Generator', layout)
+font = ("Arial", 11)
 
 # While loop allowing the user to
 # generate multiple passwords, or
 # exit the program.
 while True:
     event, values = window.read()
-    if event == 'Exit':
+    if event == 'Quit':
         break
     if event == 'Generate':
-        print(random_password())
+        for i in range(1, 100):
+            count += 1
+            print(password_generator())
+            window['-PROGRESS_BAR-'].update(current_count=count)
 
 
-
+# TODO: Add slider option for number of results.
 
 
